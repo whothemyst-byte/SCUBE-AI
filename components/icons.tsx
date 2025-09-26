@@ -8,7 +8,7 @@ type IconProps = {
 
 export const LogoIcon: React.FC<IconProps> = ({ className }) => (
   <img 
-    src="components/Log.png" 
+    src="/components/logo.png" 
     alt="SCUBE Logo" 
     className={className} 
   />
