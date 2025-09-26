@@ -6,6 +6,7 @@ type IconProps = {
   className?: string;
 };
 
+/*
 export const LogoIcon: React.FC<IconProps> = ({ className }) => (
   <img 
     src="/components/logo.png" 
@@ -13,6 +14,14 @@ export const LogoIcon: React.FC<IconProps> = ({ className }) => (
     className={className} 
   />
 );
+*/
+
+export const LogoIcon: React.FC<IconProps> = ({ className }) => (
+  <svg className={className} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9.75v9.75" />
+  </svg>
+);
+
 
 export const ChevronRightIcon: React.FC<IconProps> = ({ className }) => (
   <svg className={className} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
