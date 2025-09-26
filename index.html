@@ -8,6 +8,65 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      :root, [data-theme='dark'] {
+        --color-background: #1A1A1A;
+        --color-text-primary: #F7F7F7;
+        --color-text-secondary: #A0A0A0;
+        --color-accent: #8A2BE2; /* violet-purple */
+        --color-accent-glow: rgba(138, 43, 226, 0.5);
+        --color-card-background: #FFFFFF;
+        --color-card-border: #E5E7EB;
+        --color-card-text-primary: #1A1A1A;
+        --color-card-text-secondary: #4B5563;
+        --color-hero-bg: linear-gradient(to bottom right, #007CF0, #8A2BE2);
+        --color-btn-primary-text: #1A1A1A;
+        --color-btn-secondary-bg: #FF6B6B;
+        --color-btn-secondary-text: #FFFFFF;
+        --color-input-bg: rgba(0, 0, 0, 0.5);
+        --color-input-border: #4B5563;
+        --color-input-text: #FFFFFF;
+        --color-radial-gradient: #8A2BE2;
+      }
+      [data-theme='light'] {
+        --color-background: #F7F7F7;
+        --color-text-primary: #1A1A1A;
+        --color-text-secondary: #4B5563;
+        --color-accent: #8A2BE2;
+        --color-accent-glow: rgba(138, 43, 226, 0.5);
+        --color-card-background: #FFFFFF;
+        --color-card-border: #E5E7EB;
+        --color-card-text-primary: #1A1A1A;
+        --color-card-text-secondary: #4B5563;
+        --color-hero-bg: linear-gradient(to bottom right, #007CF0, #8A2BE2);
+        --color-btn-primary-text: #1A1A1A;
+        --color-btn-secondary-bg: #FF6B6B;
+        --color-btn-secondary-text: #FFFFFF;
+        --color-input-bg: #FFFFFF;
+        --color-input-border: #D1D5DB;
+        --color-input-text: #1A1A1A;
+        --color-radial-gradient: #8A2BE2;
+      }
+      [data-theme='mild-gray'] {
+          --color-background: #2D3748;
+          --color-text-primary: #E2E8F0;
+          --color-text-secondary: #A0AEC0;
+          --color-accent: #00F0B8;
+          --color-accent-glow: rgba(0, 240, 184, 0.5);
+          --color-card-background: #4A5568;
+          --color-card-border: #718096;
+          --color-card-text-primary: #F7FAFC;
+          --color-card-text-secondary: #A0AEC0;
+          --color-hero-bg: linear-gradient(to bottom right, #2D3748, #1A202C);
+          --color-btn-primary-text: #1A1A1A;
+          --color-btn-secondary-bg: #FF6B6B;
+          --color-btn-secondary-text: #FFFFFF;
+          --color-input-bg: #1A202C;
+          --color-input-border: #4A5568;
+          --color-input-text: #E2E8F0;
+          --color-radial-gradient: #00F0B8;
+      }
+    </style>
     <script>
       tailwind.config = {
         theme: {
@@ -16,6 +75,20 @@
               sans: ['Space Grotesk', 'sans-serif'],
             },
             colors: {
+              background: 'var(--color-background)',
+              'text-primary': 'var(--color-text-primary)',
+              'text-secondary': 'var(--color-text-secondary)',
+              'accent': 'var(--color-accent)',
+              'card-background': 'var(--color-card-background)',
+              'card-border': 'var(--color-card-border)',
+              'card-text-primary': 'var(--color-card-text-primary)',
+              'card-text-secondary': 'var(--color-card-text-secondary)',
+              'btn-secondary-bg': 'var(--color-btn-secondary-bg)',
+              'btn-secondary-text': 'var(--color-btn-secondary-text)',
+              'input-bg': 'var(--color-input-bg)',
+              'input-border': 'var(--color-input-border)',
+              'input-text': 'var(--color-input-text)',
+              // Raw colors for gradients and specific use cases
               'electric-blue': '#007CF0',
               'sunset-pink': '#FF6B6B',
               'mint-green': '#00F0B8',
@@ -24,8 +97,7 @@
               'light-gray': '#F7F7F7',
             },
             boxShadow: {
-              'glow-violet': '0 0 15px rgba(138, 43, 226, 0.5), 0 0 5px rgba(138, 43, 226, 0.7)',
-              'glow-violet-light': '0 0 25px rgba(138, 43, 226, 0.7), 0 0 10px rgba(138, 43, 226, 0.9)',
+              'glow-accent': '0 0 15px var(--color-accent-glow), 0 0 5px var(--color-accent-glow)',
             },
             animation: {
               'glowing': 'glowing 3s infinite ease-in-out',
@@ -33,8 +105,8 @@
             },
             keyframes: {
               glowing: {
-                '0%, 100%': { boxShadow: '0 0 8px rgba(138, 43, 226, 0.4), 0 0 4px rgba(138, 43, 226, 0.6)' },
-                '50%': { boxShadow: '0 0 16px rgba(138, 43, 226, 0.6), 0 0 8px rgba(138, 43, 226, 0.8)' },
+                '0%, 100%': { boxShadow: '0 0 8px var(--color-accent-glow), 0 0 4px var(--color-accent-glow)' },
+                '50%': { boxShadow: '0 0 16px var(--color-accent-glow), 0 0 8px var(--color-accent-glow)' },
               },
             }
           }
@@ -55,7 +127,7 @@
 }
 </script>
   </head>
-  <body class="bg-dark-charcoal">
+  <body class="bg-background text-text-primary">
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
   </body>

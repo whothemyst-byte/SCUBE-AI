@@ -8,9 +8,9 @@ import CareersPage from './pages/CareersPage';
 
 const App: React.FC = () => {
   return (
-    <div className="bg-dark-charcoal text-gray-200 font-sans min-h-screen flex flex-col">
+    <div className="bg-background text-text-primary font-sans min-h-screen flex flex-col">
       <div 
-        className="absolute inset-0 z-0 opacity-10 bg-[radial-gradient(#8A2BE2_1px,transparent_1px)] [background-size:32px_32px]"
+        className="absolute inset-0 z-0 opacity-10 bg-[radial-gradient(var(--color-radial-gradient)_1px,transparent_1px)] [background-size:32px_32px]"
         style={{ maskImage: 'radial-gradient(ellipse at center, white 20%, transparent 70%)'}}
       ></div>
 

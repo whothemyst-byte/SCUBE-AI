@@ -10,19 +10,19 @@ interface JobCardProps {
 
 const JobCard: React.FC<JobCardProps> = ({ title, location, type, description }) => {
   return (
-    <div className="bg-white border border-gray-200 p-8 rounded-2xl hover:border-violet-purple transition-all duration-300 transform hover:-translate-y-2 flex flex-col">
+    <div className="bg-card-background border border-card-border p-8 rounded-2xl hover:border-accent transition-all duration-300 transform hover:-translate-y-2 flex flex-col">
       <div className="flex-grow">
         <div className="flex justify-between items-start mb-4">
-          <h3 className="text-xl font-bold text-dark-charcoal">{title}</h3>
-          <span className="bg-violet-purple/10 text-violet-purple text-xs font-semibold px-3 py-1 rounded-full border border-violet-purple/30">{type}</span>
+          <h3 className="text-xl font-bold text-card-text-primary">{title}</h3>
+          <span className="bg-accent/10 text-accent text-xs font-semibold px-3 py-1 rounded-full border border-accent/30">{type}</span>
         </div>
-        <p className="text-gray-600 mb-2">{location}</p>
-        <p className="text-gray-700 text-sm leading-relaxed">{description}</p>
+        <p className="text-card-text-secondary mb-2">{location}</p>
+        <p className="text-card-text-primary text-sm leading-relaxed">{description}</p>
       </div>
       <div className="mt-6">
         <Link 
           to="/signup"
-          className="w-full text-center inline-block bg-sunset-pink text-white font-bold py-3 px-4 rounded-xl transition-all duration-300 transform hover:-translate-y-1 hover:bg-gradient-to-r from-electric-blue to-mint-green hover:text-dark-charcoal"
+          className="w-full text-center inline-block bg-btn-secondary-bg text-btn-secondary-text font-bold py-3 px-4 rounded-xl transition-all duration-300 transform hover:-translate-y-1 hover:bg-gradient-to-r from-electric-blue to-mint-green hover:text-dark-charcoal"
         >
           Apply Now
         </Link>

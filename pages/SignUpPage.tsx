@@ -31,12 +31,9 @@ const SignUpPage: React.FC = () => {
         setError('');
         setStatus('submitting');
         
-        // Mock Supabase call
+        // Mock API call
         try {
             await new Promise(resolve => setTimeout(resolve, 2000));
-            // In a real app, you would integrate the Supabase client here:
-            // const { data, error } = await supabase.from('early_access_signups').insert([formData]);
-            // if (error) throw new Error(error.message);
             console.log('Submitted data:', formData);
             setStatus('success');
         } catch (err) {
@@ -45,18 +42,18 @@ const SignUpPage: React.FC = () => {
         }
     };
 
-    const inputClasses = "w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-violet-purple focus:border-transparent transition-all";
+    const inputClasses = "w-full bg-input-bg border border-input-border rounded-lg px-4 py-3 text-input-text placeholder-text-secondary focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all";
 
     return (
         <div className="flex-grow flex items-center justify-center py-12 px-4">
             <div className="w-full max-w-2xl mx-auto">
-                <div className="relative bg-black/30 border border-violet-purple/30 rounded-2xl shadow-glow-violet backdrop-blur-md p-8 md:p-12">
+                <div className="relative bg-black/20 border border-accent/30 rounded-2xl shadow-glow-accent backdrop-blur-md p-8 md:p-12">
                     
                     {status === 'success' ? (
                         <div className="text-center">
-                            <CheckCircleIcon className="w-20 h-20 text-violet-purple mx-auto mb-6" />
-                            <h2 className="text-3xl font-bold text-white mb-4">You're on the list!</h2>
-                            <p className="text-gray-300 mb-8">
+                            <CheckCircleIcon className="w-20 h-20 text-accent mx-auto mb-6" />
+                            <h2 className="text-3xl font-bold text-text-primary mb-4">You're on the list!</h2>
+                            <p className="text-text-secondary mb-8">
                                 Thank you for registering for early access, {formData.name}. We'll contact you at {formData.email} when the agent is ready for you.
                             </p>
                             <Link to="/" className="inline-block bg-mint-green text-dark-charcoal font-bold px-8 py-3 rounded-lg hover:bg-opacity-80 transition-all duration-300 transform hover:-translate-y-1">
@@ -65,26 +62,26 @@ const SignUpPage: React.FC = () => {
                         </div>
                     ) : (
                         <>
-                            <button onClick={() => navigate('/')} className="absolute top-4 right-4 text-gray-500 hover:text-white">
+                            <button onClick={() => navigate('/')} className="absolute top-4 right-4 text-text-secondary hover:text-text-primary">
                                 <XMarkIcon className="w-6 h-6" />
                             </button>
-                            <h2 className="text-3xl font-bold text-white text-center mb-2">Get Early Access</h2>
-                            <p className="text-center text-gray-400 mb-8">Register now for the next drop of our AI Agent.</p>
+                            <h2 className="text-3xl font-bold text-text-primary text-center mb-2">Get Early Access</h2>
+                            <p className="text-center text-text-secondary mb-8">Register now for the next drop of our AI Agent.</p>
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 <div>
-                                    <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">Full Name</label>
+                                    <label htmlFor="name" className="block text-sm font-medium text-text-secondary mb-2">Full Name</label>
                                     <input type="text" name="name" id="name" value={formData.name} onChange={handleChange} className={inputClasses} placeholder="Your Name" required />
                                 </div>
                                 <div>
-                                    <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
+                                    <label htmlFor="email" className="block text-sm font-medium text-text-secondary mb-2">Email Address</label>
                                     <input type="email" name="email" id="email" value={formData.email} onChange={handleChange} className={inputClasses} placeholder="you@company.com" required />
                                 </div>
                                 <div>
-                                    <label htmlFor="phone" className="block text-sm font-medium text-gray-300 mb-2">Phone Number (Optional)</label>
+                                    <label htmlFor="phone" className="block text-sm font-medium text-text-secondary mb-2">Phone Number (Optional)</label>
                                     <input type="tel" name="phone" id="phone" value={formData.phone} onChange={handleChange} className={inputClasses} placeholder="+1 (555) 000-0000" />
                                 </div>
                                 <div>
-                                    <label htmlFor="companyInfo" className="block text-sm font-medium text-gray-300 mb-2">About your company / need</label>
+                                    <label htmlFor="companyInfo" className="block text-sm font-medium text-text-secondary mb-2">About your company / need</label>
                                     <textarea name="companyInfo" id="companyInfo" value={formData.companyInfo} onChange={handleChange} rows={4} className={inputClasses} placeholder="Tell us what you'd like to automate..." required></textarea>
                                 </div>
                                 {status === 'error' && <p className="text-red-400 text-sm">{error}</p>}

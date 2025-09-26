@@ -33,10 +33,10 @@ const CareersPage: React.FC = () => {
     return (
         <div className="flex-grow container mx-auto px-4 py-16 md:py-24">
             <div className="text-center max-w-3xl mx-auto mb-16">
-                <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight mb-4">
+                <h1 className="text-4xl md:text-6xl font-bold text-text-primary leading-tight mb-4">
                     Join Our Team
                 </h1>
-                <p className="text-lg text-gray-300">
+                <p className="text-lg text-text-secondary">
                     We're looking for passionate individuals to help us build the future of AI. If you're excited about creating transformative technology, we want to hear from you.
                 </p>
             </div>
