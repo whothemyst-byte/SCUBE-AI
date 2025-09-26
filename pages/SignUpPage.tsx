@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { type FormData } from '../types';
 import { CheckCircleIcon, XMarkIcon } from '../components/icons';
+import { supabase } from '../lib/supabase';
 
 const SignUpPage: React.FC = () => {
     const navigate = useNavigate();
@@ -9,7 +10,7 @@ const SignUpPage: React.FC = () => {
         name: '',
         email: '',
         phone: '',
-        companyInfo: ''
+        company: ''
     });
     const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
     const [error, setError] = useState('');
@@ -23,7 +24,7 @@ const SignUpPage: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!formData.name || !formData.email || !formData.companyInfo) {
+        if (!formData.name || !formData.email || !formData.company || !formData.phone) {
             setError('Please fill in all required fields.');
             setStatus('error');
             return;
@@ -31,14 +32,31 @@ const SignUpPage: React.FC = () => {
         setError('');
         setStatus('submitting');
         
-        // Mock API call
         try {
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            console.log('Submitted data:', formData);
+            const { error: supabaseError } = await supabase
+                .from('early_access_submissions')
+                .insert([
+                    { 
+                        name: formData.name, 
+                        email: formData.email, 
+                        phone: formData.phone, 
+                        company: formData.company 
+                    }
+                ]);
+
+            if (supabaseError) {
+                setStatus('error');
+                setError(supabaseError.message || `An unknown error occurred: ${JSON.stringify(supabaseError)}`);
+                console.error('Supabase error:', supabaseError);
+                return;
+            }
+            
             setStatus('success');
-        } catch (err) {
+        } catch (err: any) {
             setStatus('error');
-            setError('Something went wrong. Please try again later.');
+            const errorMessage = err.message ? err.message : 'An unexpected error occurred. Please try again.';
+            setError(errorMessage);
+            console.error('Unexpected error:', err);
         }
     };
 
@@ -77,12 +95,12 @@ const SignUpPage: React.FC = () => {
                                     <input type="email" name="email" id="email" value={formData.email} onChange={handleChange} className={inputClasses} placeholder="you@company.com" required />
                                 </div>
                                 <div>
-                                    <label htmlFor="phone" className="block text-sm font-medium text-text-secondary mb-2">Phone Number (Optional)</label>
-                                    <input type="tel" name="phone" id="phone" value={formData.phone} onChange={handleChange} className={inputClasses} placeholder="+1 (555) 000-0000" />
+                                    <label htmlFor="phone" className="block text-sm font-medium text-text-secondary mb-2">Phone Number</label>
+                                    <input type="tel" name="phone" id="phone" value={formData.phone} onChange={handleChange} className={inputClasses} placeholder="+1 (555) 000-0000" required />
                                 </div>
                                 <div>
-                                    <label htmlFor="companyInfo" className="block text-sm font-medium text-text-secondary mb-2">About your company / need</label>
-                                    <textarea name="companyInfo" id="companyInfo" value={formData.companyInfo} onChange={handleChange} rows={4} className={inputClasses} placeholder="Tell us what you'd like to automate..." required></textarea>
+                                    <label htmlFor="company" className="block text-sm font-medium text-text-secondary mb-2">About your company / need</label>
+                                    <textarea name="company" id="company" value={formData.company} onChange={handleChange} rows={4} className={inputClasses} placeholder="Tell us what you'd like to automate..." required></textarea>
                                 </div>
                                 {status === 'error' && <p className="text-red-400 text-sm">{error}</p>}
                                 <div>

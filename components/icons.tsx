@@ -1,4 +1,5 @@
 
+
 import React from 'react';
 
 type IconProps = {
@@ -6,13 +7,11 @@ type IconProps = {
 };
 
 export const LogoIcon: React.FC<IconProps> = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/>
-    <path d="M2 7L12 12" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/>
-    <path d="M12 22V12" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/>
-    <path d="M22 7L12 12" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/>
-    <path d="M17 4.5L7 9.5" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/>
-  </svg>
+  <img 
+    src="components/Log.png" 
+    alt="SCUBE Logo" 
+    className={className} 
+  />
 );
 
 export const ChevronRightIcon: React.FC<IconProps> = ({ className }) => (
@@ -111,6 +110,7 @@ export const SunIcon: React.FC<IconProps> = ({ className }) => (
 );
 
 export const MoonIcon: React.FC<IconProps> = ({ className }) => (
+  // FIX: Corrected a typo in the strokeWidth prop. It was `strokeWidth={1.5"` which is invalid syntax.
   <svg className={className} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
     <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
   </svg>

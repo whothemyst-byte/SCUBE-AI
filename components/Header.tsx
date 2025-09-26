@@ -10,7 +10,7 @@ const Header: React.FC = () => {
     <header className="relative z-20 container mx-auto px-4 py-6">
       <div className="flex justify-between items-center">
         <Link to="/" className="flex items-center gap-2 text-2xl font-bold text-text-primary">
-          <LogoIcon className="h-8 w-8 text-accent" />
+          <LogoIcon className="h-8 w-8" />
           <span>SCUBE</span>
         </Link>
         <div className="flex items-center gap-8">
