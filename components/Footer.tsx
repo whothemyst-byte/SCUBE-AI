@@ -19,7 +19,7 @@ const Footer: React.FC = () => {
           <div>
             <h3 className="font-semibold text-text-primary mb-4">Contact</h3>
             <ul className="space-y-2">
-              <li><a href="mailto:hello@scube.ai" className="text-text-secondary hover:text-accent">hello@scube.ai</a></li>
+              <li><a href="mailto:hello.scube.ai@gmail.com" className="text-text-secondary hover:text-accent">hello.scube.ai@gmail.com</a></li>
               <li className="text-text-secondary">Join our community</li>
             </ul>
           </div>
