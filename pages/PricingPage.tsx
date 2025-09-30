@@ -1,6 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { CheckCircleIcon, BoltIcon, LayersIcon, UserGroupIcon } from '../components/icons';
+import { EarlyAccessDialog } from '../components/EarlyAccessDialog';
+import { Button } from '../components/ui/button';
 
 const PricingTier: React.FC<{
   name: string;
@@ -8,10 +9,9 @@ const PricingTier: React.FC<{
   description: string;
   features: string[];
   cta: string;
-  ctaLink: string;
   isPopular?: boolean;
   icon: React.ReactNode;
-}> = ({ name, price, description, features, cta, ctaLink, isPopular = false, icon }) => (
+}> = ({ name, price, description, features, cta, isPopular = false, icon }) => (
   <div className={`
     relative bg-card-background border border-card-border p-8 rounded-2xl
     transition-all duration-300 flex flex-col
@@ -34,16 +34,17 @@ const PricingTier: React.FC<{
         </li>
       ))}
     </ul>
-    <Link
-      to={ctaLink}
-      style={isPopular ? { background: 'linear-gradient(to right, #007CF0, #00F0B8)', color: 'var(--color-btn-primary-text)' } : {}}
-      className={`
-        w-full text-center font-bold py-3 px-4 rounded-lg transition-all mt-auto
-        ${isPopular ? 'hover:opacity-80' : 'bg-white/10 text-text-primary hover:bg-white/20'}
-      `}
-    >
-      {cta}
-    </Link>
+    <EarlyAccessDialog>
+        {/* FIX: Removed style prop and used classes for gradient background. The Button component from react-aria-components does not accept a style prop. */}
+        <Button
+          className={`
+            w-full mt-auto
+            ${isPopular ? 'hover:opacity-80 bg-gradient-to-r from-blue-500 to-green-400 text-primary-foreground' : 'bg-white/10 text-text-primary hover:bg-white/20'}
+          `}
+        >
+          {cta}
+        </Button>
+    </EarlyAccessDialog>
   </div>
 );
 
@@ -71,7 +72,6 @@ const PricingPage: React.FC = () => {
             'Email Support'
           ]}
           cta="Get Started"
-          ctaLink="/signup"
         />
         <PricingTier
           icon={<LayersIcon />}
@@ -86,7 +86,6 @@ const PricingPage: React.FC = () => {
             'API Access'
           ]}
           cta="Sign Up Now"
-          ctaLink="/signup"
           isPopular
         />
         <PricingTier
@@ -102,7 +101,6 @@ const PricingPage: React.FC = () => {
             'Onboarding & Training'
           ]}
           cta="Contact Sales"
-          ctaLink="/signup"
         />
       </div>
     </div>

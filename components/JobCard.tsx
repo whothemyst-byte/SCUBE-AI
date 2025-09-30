@@ -1,5 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { EarlyAccessDialog } from './EarlyAccessDialog';
+import { Button } from './ui/button';
 
 interface JobCardProps {
   title: string;
@@ -20,12 +21,14 @@ const JobCard: React.FC<JobCardProps> = ({ title, location, type, description })
         <p className="text-card-text-primary text-sm leading-relaxed">{description}</p>
       </div>
       <div className="mt-6">
-        <Link 
-          to="/signup"
-          className="w-full text-center inline-block bg-btn-secondary-bg text-btn-secondary-text font-bold py-3 px-4 rounded-xl transition-all duration-300 transform hover:-translate-y-1 hover:bg-gradient-to-r from-electric-blue to-mint-green hover:text-dark-charcoal"
-        >
-          Apply Now
-        </Link>
+        <EarlyAccessDialog>
+          {/* FIX: Pass children to Button component explicitly */}
+          <Button 
+            className="w-full bg-btn-secondary-bg text-btn-secondary-text font-bold py-3 px-4 rounded-xl transition-all duration-300 transform hover:-translate-y-1 hover:bg-gradient-to-r from-electric-blue to-mint-green hover:text-dark-charcoal"
+          >
+            Apply Now
+          </Button>
+        </EarlyAccessDialog>
       </div>
     </div>
   );

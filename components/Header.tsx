@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { LogoIcon } from './icons';
-import ThemeSwitcher from './ThemeSwitcher';
+import { ToggleTheme } from './ui/toggle-theme';
 
 const Header: React.FC = () => {
-  const navItems: { name: string; path: string }[] = [];
+  const navItems: { name: string; path: string }[] = [
+    { name: 'Our Agents', path: '/agents' },
+  ];
 
   return (
     <header className="relative z-20 container mx-auto px-4 py-6">
@@ -21,7 +23,7 @@ const Header: React.FC = () => {
               </Link>
             ))}
           </nav>
-          <ThemeSwitcher />
+          <ToggleTheme />
         </div>
       </div>
     </header>

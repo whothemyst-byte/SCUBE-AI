@@ -1,11 +1,22 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Header from './components/Header';
 import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
-import SignUpPage from './pages/SignUpPage';
+import OurAgentsPage from './pages/OurAgentsPage';
+import AgentDetailPage from './pages/AgentDetailPage';
+// import PricingPage from './pages/PricingPage';
+import CareersPage from './pages/CareersPage';
+import { Toaster } from './components/ui/toaster';
+import Preloader from './components/ui/preloader';
 
 const App: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  if (isLoading) {
+    return <Preloader onComplete={() => setIsLoading(false)} />;
+  }
+
   return (
     <div className="bg-background text-text-primary font-sans min-h-screen flex flex-col">
       <div 
@@ -13,14 +24,17 @@ const App: React.FC = () => {
         style={{ maskImage: 'radial-gradient(ellipse at center, white 20%, transparent 70%)'}}
       ></div>
 
-      <Header />
       <main className="relative z-10 flex-grow flex flex-col">
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/agents" element={<OurAgentsPage />} />
+          <Route path="/agent/whatsapp-sales-assistant" element={<AgentDetailPage />} />
+          {/* <Route path="/pricing" element={<PricingPage />} /> */}
+          <Route path="/careers" element={<CareersPage />} />
         </Routes>
       </main>
       <Footer />
+      <Toaster />
     </div>
   );
 };

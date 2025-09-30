@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import Countdown from '../components/Countdown';
-import { BoltIcon, CurrencyDollarIcon, LayersIcon, CheckCircleIcon } from '../components/icons';
+import React from 'react';
+import { HeroSection } from '../components/blocks/hero-section-1';
+import { BoltIcon, CurrencyDollarIcon, LayersIcon } from '../components/icons';
+import { EarlyAccessDialog } from '../components/EarlyAccessDialog';
+import { Button } from '../components/ui/button';
 
 const FeatureCard: React.FC<{ icon: React.ReactNode; title: string; description: string; }> = ({ icon, title, description }) => (
     <div className="bg-card-background border border-card-border p-8 rounded-2xl hover:border-accent transition-all duration-300 transform hover:-translate-y-2">
@@ -14,8 +15,9 @@ const FeatureCard: React.FC<{ icon: React.ReactNode; title: string; description:
 );
 
 const HomePage: React.FC = () => {
-    const [billingCycle, setBillingCycle] = useState<'monthly' | 'annually'>('monthly');
+    // const [billingCycle, setBillingCycle] = useState<'monthly' | 'annually'>('monthly');
 
+    /*
     const plans = [
         {
             name: 'Starter',
@@ -30,7 +32,6 @@ const HomePage: React.FC = () => {
                 'Email Support'
             ],
             cta: 'Get it now',
-            ctaLink: '/signup',
         },
         {
             name: 'Growth',
@@ -48,7 +49,6 @@ const HomePage: React.FC = () => {
                 'Priority Email & WhatsApp Support'
             ],
             cta: 'Get it now',
-            ctaLink: '/signup',
             isPopular: true,
         },
         {
@@ -67,39 +67,17 @@ const HomePage: React.FC = () => {
                 'Dedicated Account Manager'
             ],
             cta: 'Get it now',
-            ctaLink: '/signup',
         }
     ];
+    */
 
     return (
         <div className="flex-grow">
             {/* Hero Section */}
-            <div style={{ background: 'var(--color-hero-bg)' }} className="rounded-b-3xl">
-                <section className="container mx-auto px-4 py-16 md:py-24 text-center">
-                    <h1 className="text-4xl md:text-7xl font-bold text-white leading-tight mb-6 pt-12">
-                        Automate Your Business<br />Processes With SCUBE
-                    </h1>
-                    <p className="text-lg md:text-xl text-white/80 max-w-3xl mx-auto mb-8">
-                        Our tailored AI solutions cut down manual tasks, freeing time for strategic growth and scalability.
-                    </p>
-                    <div className="flex justify-center items-center gap-4">
-                        <Link
-                            to="/signup"
-                            className="bg-btn-secondary-bg text-btn-secondary-text font-bold px-8 py-3 rounded-lg hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105"
-                        >
-                            Sign Up
-                        </Link>
-                    </div>
-                    
-                    <div className="mt-24">
-                        <h2 className="text-2xl font-semibold text-white mb-4">New AI Agent Drops In:</h2>
-                        <Countdown />
-                    </div>
-                </section>
-            </div>
+            <HeroSection />
             
             {/* Features Section */}
-            <section className="container mx-auto px-4 py-16 md:py-24">
+            <section id="features" className="container mx-auto px-4 py-16 md:py-24">
                 <h2 className="text-3xl md:text-4xl font-bold text-text-primary text-center mb-12">Why Choose SCUBE?</h2>
                 <div className="grid md:grid-cols-3 gap-8">
                     <FeatureCard
@@ -121,7 +99,8 @@ const HomePage: React.FC = () => {
             </section>
             
             {/* About Us Section */}
-            <section className="container mx-auto px-4 py-16 md:py-24">
+            {/*
+            <section id="about" className="container mx-auto px-4 py-16 md:py-24">
                 <div className="text-center max-w-3xl mx-auto">
                     <h2 className="text-3xl md:text-4xl font-bold text-text-primary mb-6">About SCUBE AI</h2>
                     <p className="text-base md:text-lg text-text-secondary leading-relaxed">
@@ -129,9 +108,11 @@ const HomePage: React.FC = () => {
                     </p>
                 </div>
             </section>
+            */}
 
             {/* Pricing Section */}
-            <section className="container mx-auto px-4 py-16 md:py-24">
+            {/*
+            <section id="pricing" className="container mx-auto px-4 py-16 md:py-24">
                 <div className="text-center max-w-3xl mx-auto mb-12">
                     <h2 className="text-4xl md:text-6xl font-bold text-text-primary leading-tight mb-4">
                         Choose your Plan
@@ -171,8 +152,10 @@ const HomePage: React.FC = () => {
                             `}
                         >
                             {plan.isPopular && (
-                                <div className="absolute top-0 right-8 -translate-y-1/2 bg-accent text-white px-4 py-1 text-sm font-bold rounded-full uppercase tracking-wider">
-                                    Most Popular
+                                <div className="w-full text-center mb-6">
+                                    <span className="bg-accent text-white px-4 py-1 text-sm font-bold rounded-full uppercase tracking-wider">
+                                        Most Popular
+                                    </span>
                                 </div>
                             )}
                             <h3 className="text-2xl font-bold text-card-text-primary mb-2">{plan.name}</h3>
@@ -195,20 +178,21 @@ const HomePage: React.FC = () => {
                                     </li>
                                 ))}
                             </ul>
-                            <Link
-                                to={plan.ctaLink}
-                                style={plan.isPopular ? { background: 'linear-gradient(to right, #007CF0, #00F0B8)', color: 'var(--color-btn-primary-text)' } : {}}
-                                className={`
-                                    w-full block text-center font-bold py-3 px-4 rounded-xl transition-all duration-300 mt-auto text-lg transform hover:-translate-y-1
-                                    ${plan.isPopular ? 'hover:opacity-90' : 'bg-btn-secondary-bg text-btn-secondary-text hover:bg-opacity-90'}
-                                `}
-                            >
-                                {plan.cta}
-                            </Link>
+                            <EarlyAccessDialog>
+                                <Button
+                                    className={`
+                                        w-full text-lg
+                                        ${plan.isPopular ? 'bg-gradient-to-r from-blue-500 to-green-400 text-white' : 'bg-btn-secondary-bg text-btn-secondary-text hover:bg-opacity-90'}
+                                    `}
+                                >
+                                    {plan.cta}
+                                </Button>
+                            </EarlyAccessDialog>
                         </div>
                     ))}
                 </div>
             </section>
+            */}
             
             <section className="container mx-auto px-4 py-16 md:py-24">
                 <div className="text-center max-w-3xl mx-auto bg-card-background border border-card-border p-8 md:p-12 rounded-2xl">
@@ -216,13 +200,14 @@ const HomePage: React.FC = () => {
                     <p className="text-base md:text-lg text-card-text-secondary mb-8">
                         Let's talk about how SCUBE's AI agents can be tailored to your specific needs.
                     </p>
-                    <Link
-                        to="/signup"
-                        style={{ background: 'linear-gradient(to right, #007CF0, #00F0B8)', color: 'var(--color-btn-primary-text)' }}
-                        className="inline-block whitespace-nowrap font-bold px-6 py-3 md:px-8 md:py-4 rounded-lg hover:opacity-90 transition-all duration-300 transform hover:scale-105"
-                    >
-                        Schedule a Free Consultation
-                    </Link>
+                    <EarlyAccessDialog>
+                        {/* FIX: Removed style prop and used classes for gradient background. The Button component from react-aria-components does not accept a style prop. */}
+                        <Button
+                            className="inline-block whitespace-nowrap font-bold px-6 py-3 md:px-8 md:py-4 rounded-lg hover:opacity-90 transition-all duration-300 transform hover:scale-105 bg-gradient-to-r from-blue-500 to-green-400 text-primary-foreground"
+                        >
+                            Schedule a Free Consultation
+                        </Button>
+                    </EarlyAccessDialog>
                 </div>
             </section>
         </div>

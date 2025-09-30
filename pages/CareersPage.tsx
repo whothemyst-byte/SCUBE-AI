@@ -1,5 +1,7 @@
+
 import React from 'react';
 import JobCard from '../components/JobCard';
+import Header from '../components/Header';
 
 const jobs = [
     {
@@ -31,27 +33,30 @@ const jobs = [
 
 const CareersPage: React.FC = () => {
     return (
-        <div className="flex-grow container mx-auto px-4 py-16 md:py-24">
-            <div className="text-center max-w-3xl mx-auto mb-16">
-                <h1 className="text-4xl md:text-6xl font-bold text-text-primary leading-tight mb-4">
-                    Join Our Team
-                </h1>
-                <p className="text-lg text-text-secondary">
-                    We're looking for passionate individuals to help us build the future of AI. If you're excited about creating transformative technology, we want to hear from you.
-                </p>
+        <>
+            <Header />
+            <div className="flex-grow container mx-auto px-4 py-16 md:py-24">
+                <div className="text-center max-w-3xl mx-auto mb-16">
+                    <h1 className="text-4xl md:text-6xl font-bold text-text-primary leading-tight mb-4">
+                        Join Our Team
+                    </h1>
+                    <p className="text-lg text-text-secondary">
+                        We're looking for passionate individuals to help us build the future of AI. If you're excited about creating transformative technology, we want to hear from you.
+                    </p>
+                </div>
+                <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-4xl mx-auto items-start">
+                    {jobs.map((job, index) => (
+                        <JobCard
+                            key={index}
+                            title={job.title}
+                            location={job.location}
+                            type={job.type}
+                            description={job.description}
+                        />
+                    ))}
+                </div>
             </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-4xl mx-auto items-start">
-                {jobs.map((job, index) => (
-                    <JobCard
-                        key={index}
-                        title={job.title}
-                        location={job.location}
-                        type={job.type}
-                        description={job.description}
-                    />
-                ))}
-            </div>
-        </div>
+        </>
     );
 };
 
