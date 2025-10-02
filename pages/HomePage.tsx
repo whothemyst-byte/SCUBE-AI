@@ -62,7 +62,7 @@ const HomePage: React.FC = () => {
                         <EarlyAccessDialog>
                             {/* FIX: Removed style prop and used classes for gradient background. The Button component from react-aria-components does not accept a style prop. */}
                             <Button
-                                className="inline-block whitespace-nowrap font-bold px-6 py-3 md:px-8 md:py-4 rounded-lg hover:opacity-90 transition-all duration-300 transform hover:scale-105 bg-gradient-to-r from-blue-500 to-green-400 text-primary-foreground"
+                                className="inline-flex items-center justify-center whitespace-nowrap font-bold px-6 py-3 md:px-8 md:py-4 rounded-lg hover:opacity-90 transition-all duration-300 transform hover:scale-105 bg-gradient-to-r from-blue-500 to-green-400 text-primary-foreground"
                             >
                                 Schedule a Free Consultation
                             </Button>

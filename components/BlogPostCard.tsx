@@ -4,7 +4,31 @@ import { ArrowRight } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { type BlogPost } from '../data/blogPosts';
 
-const optimizeUnsplashUrl = (url: string, width: number) => {
+// Helper function to generate a responsive srcset from an Unsplash URL
+const generateUnsplashSrcSet = (url: string) => {
+  try {
+    const urlObj = new URL(url);
+    const baseUrl = `${urlObj.origin}${urlObj.pathname}`;
+    // Define desired widths for the responsive images
+    const sizes = [400, 600, 800, 1200, 1600];
+    return sizes
+      .map(size => {
+        const params = new URLSearchParams(urlObj.search);
+        params.set('w', String(size));
+        params.set('auto', 'format');
+        params.set('q', '75');
+        params.set('fit', 'crop');
+        return `${baseUrl}?${params.toString()} ${size}w`;
+      })
+      .join(', ');
+  } catch (e) {
+    // Return empty string if URL is invalid, so srcset is not applied
+    return '';
+  }
+};
+
+// Helper function to get a single optimized URL for the src attribute as a fallback
+const getOptimizedUnsplashUrl = (url: string, width: number) => {
   try {
     const urlObj = new URL(url);
     const params = new URLSearchParams(urlObj.search);
@@ -20,6 +44,9 @@ const optimizeUnsplashUrl = (url: string, width: number) => {
 };
 
 export const BlogPostCard: React.FC<{ post: BlogPost }> = ({ post }) => {
+  const srcSet = generateUnsplashSrcSet(post.imageUrl);
+  const defaultSrc = getOptimizedUnsplashUrl(post.imageUrl, 600);
+
   return (
     <Link 
       to={`/blog/${post.slug}`} 
@@ -27,7 +54,9 @@ export const BlogPostCard: React.FC<{ post: BlogPost }> = ({ post }) => {
     >
       <div className="overflow-hidden">
         <img
-          src={optimizeUnsplashUrl(post.imageUrl, 600)}
+          src={defaultSrc}
+          srcSet={srcSet}
+          sizes="(max-width: 768px) 90vw, (max-width: 1024px) 45vw, 350px"
           alt={post.title}
           className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
           loading="lazy"

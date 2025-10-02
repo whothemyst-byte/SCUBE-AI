@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 import Header from '../components/Header';
 import { blogPosts } from '../data/blogPosts';
 import { BlogPostCard } from '../components/BlogPostCard';
@@ -18,6 +19,23 @@ const BlogPage: React.FC = () => {
 
   return (
     <>
+      <Helmet>
+        <title>SCUBE AI Blog | Insights on AI & Business Automation</title>
+        <meta name="description" content="Explore the latest insights, guides, and updates on the future of business automation with autonomous AI agents. Stay ahead with SCUBE AI." />
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={window.location.href} />
+        <meta property="og:title" content="SCUBE AI Blog | Insights on AI & Business Automation" />
+        <meta property="og:description" content="Explore the latest insights, guides, and updates on the future of business automation with autonomous AI agents. Stay ahead with SCUBE AI." />
+        <meta property="og:image" content="https://images.unsplash.com/photo-1677756119517-756a188d2d94?q=80&w=1200&auto=format&fit=crop" />
+        <meta property="og:site_name" content="SCUBE AI Blog" />
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content={window.location.href} />
+        <meta name="twitter:title" content="SCUBE AI Blog | Insights on AI & Business Automation" />
+        <meta name="twitter:description" content="Explore the latest insights, guides, and updates on the future of business automation with autonomous AI agents. Stay ahead with SCUBE AI." />
+        <meta name="twitter:image" content="https://images.unsplash.com/photo-1677756119517-756a188d2d94?q=80&w=1200&auto=format&fit=crop" />
+      </Helmet>
       <Header />
       <div className="flex-grow container mx-auto px-4 py-16 md:py-24">
         <AnimatedGroup preset="slide">

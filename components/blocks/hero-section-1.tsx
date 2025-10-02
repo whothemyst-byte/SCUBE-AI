@@ -69,11 +69,11 @@ export function HeroSection() {
                                     </Button>
                         
                                     <h1
-                                        className="mt-8 max-w-4xl mx-auto text-balance text-6xl md:text-7xl lg:mt-16 xl:text-[5.25rem]">
+                                        className="mt-8 max-w-4xl mx-auto text-balance text-5xl font-extrabold tracking-tight sm:text-6xl lg:text-7xl lg:mt-16">
                                         Modern Solutions for Business Automation
                                     </h1>
                                     <p
-                                        className="mx-auto mt-8 max-w-2xl text-balance text-lg">
+                                        className="mx-auto mt-8 max-w-3xl text-balance text-lg text-text-secondary md:text-xl">
                                         Highly customizable AI agents for building modern automated workflows that look and feel the way you mean it.
                                     </p>
                                     </>
