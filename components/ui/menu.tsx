@@ -5,6 +5,7 @@ import { VariantProps } from "class-variance-authority"
 import { Check, ChevronRight, Circle } from "lucide-react"
 import {
   Header as AriaHeader,
+  HeaderProps,
   Keyboard as AriaKeyboard,
   Menu as AriaMenu,
   MenuItem as AriaMenuItem,
@@ -96,26 +97,32 @@ const MenuItem = ({ children, className, ...props }: AriaMenuItemProps) => (
   </AriaMenuItem>
 )
 
-interface MenuHeaderProps extends React.ComponentProps<typeof AriaHeader> {
+interface MenuHeaderProps extends HeaderProps {
   inset?: boolean
   separator?: boolean
 }
 
-// FIX: Refactored to destructure props inside the function body to fix TypeScript errors.
-const MenuHeader = (props: MenuHeaderProps) => {
-  const { className, inset, separator = true, ...rest } = props;
-  return (
-    <AriaHeader
-      className={cn(
-        "px-3 py-1.5 text-sm font-semibold",
-        inset && "pl-8",
-        separator && "-mx-1 mb-1 border-b border-b-border pb-2.5",
-        className
-      )}
-      {...rest}
-    />
-  )
-}
+// FIX: Converted to a forwardRef component to fix prop type inference issues.
+const MenuHeader = React.forwardRef<HTMLElement, MenuHeaderProps>(
+  (props, ref) => {
+    const { className, inset, separator = true, ...rest } = props;
+    return (
+      <AriaHeader
+        ref={ref}
+        {...rest}
+        className={composeRenderProps(className, (className) =>
+          cn(
+            "px-3 py-1.5 text-sm font-semibold",
+            inset && "pl-8",
+            separator && "-mx-1 mb-1 border-b border-b-border pb-2.5",
+            className
+          )
+        )}
+      />
+    );
+  }
+);
+MenuHeader.displayName = "MenuHeader";
 
 
 const MenuSeparator = ({ className, ...props }: AriaSeparatorProps) => (

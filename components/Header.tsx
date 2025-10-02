@@ -5,7 +5,7 @@ import { ToggleTheme } from './ui/toggle-theme';
 
 const Header: React.FC = () => {
   const navItems: { name: string; path: string }[] = [
-    { name: 'Our Agents', path: '/agents' },
+    { name: 'Blog', path: '/blog' },
   ];
 
   return (

@@ -12,6 +12,7 @@ import {
   TextProps as AriaTextProps,
   composeRenderProps,
 } from "react-aria-components"
+import * as React from "react"
 
 import { cn } from "../../lib/utils"
 
@@ -68,18 +69,20 @@ interface GroupProps
   extends AriaGroupProps,
     VariantProps<typeof fieldGroupVariants> {}
 
-// FIX: Refactored to destructure props inside the function body to fix TypeScript errors.
-function FieldGroup(props: GroupProps) {
-  const { className, variant, ...rest } = props;
+// FIX: Converted to a forwardRef component to fix prop type inference issues.
+const FieldGroup = React.forwardRef<HTMLDivElement, GroupProps>((props, ref) => {
+  const { className, variant, ...rest } = props
   return (
     <AriaGroup
       {...rest}
+      ref={ref}
       className={composeRenderProps(className, (className) =>
         cn(fieldGroupVariants({ variant }), className)
       )}
     />
   )
-}
+})
+FieldGroup.displayName = "FieldGroup"
 
 export {
   Label,

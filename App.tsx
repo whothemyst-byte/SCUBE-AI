@@ -1,12 +1,12 @@
 
+
 import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
-import OurAgentsPage from './pages/OurAgentsPage';
-import AgentDetailPage from './pages/AgentDetailPage';
 // import PricingPage from './pages/PricingPage';
-import CareersPage from './pages/CareersPage';
+import BlogPage from './pages/BlogPage';
+import BlogPostDetailPage from './pages/BlogPostDetailPage';
 import { Toaster } from './components/ui/toaster';
 import Preloader from './components/ui/preloader';
 
@@ -27,10 +27,9 @@ const App: React.FC = () => {
       <main className="relative z-10 flex-grow flex flex-col">
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/agents" element={<OurAgentsPage />} />
-          <Route path="/agent/whatsapp-sales-assistant" element={<AgentDetailPage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog/:slug" element={<BlogPostDetailPage />} />
           {/* <Route path="/pricing" element={<PricingPage />} /> */}
-          <Route path="/careers" element={<CareersPage />} />
         </Routes>
       </main>
       <Footer />
