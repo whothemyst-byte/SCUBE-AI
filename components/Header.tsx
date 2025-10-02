@@ -1,10 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { LogoIcon } from './icons';
 import { ToggleTheme } from './ui/toggle-theme';
+import { cn } from '../lib/utils';
 
 const Header: React.FC = () => {
-  const navItems: { name: string; path: string }[] = [
+  const navItems = [
+    { name: 'Home', path: '/' },
     { name: 'Blog', path: '/blog' },
   ];
 
@@ -18,9 +20,18 @@ const Header: React.FC = () => {
         <div className="flex items-center gap-8">
           <nav className="hidden md:flex items-center gap-8">
             {navItems.map((item) => (
-              <Link key={item.name} to={item.path} className="text-text-secondary hover:text-text-primary transition-colors duration-300">
+              <NavLink
+                key={item.name}
+                to={item.path}
+                className={({ isActive }) =>
+                  cn(
+                    "transition-colors duration-300",
+                    isActive ? "font-bold text-accent" : "text-text-secondary hover:text-text-primary"
+                  )
+                }
+              >
                 {item.name}
-              </Link>
+              </NavLink>
             ))}
           </nav>
           <ToggleTheme />

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { ArrowRight, Menu as MenuIcon } from 'lucide-react'
 import { Button } from '../ui/button'
 import { AnimatedGroup } from '../ui/animated-group'
@@ -116,15 +116,18 @@ export function HeroSection() {
 }
 
 const menuItems = [
+    { name: 'Home', to: '/' },
     { name: 'Blog', to: '/blog' },
 ]
 
 const HeroHeader = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const [isScrolled, setIsScrolled] = React.useState(false);
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     
     const mobileMenuItems = [
+        { name: 'Home', to: '/' },
         { name: 'Blog', to: '/blog' },
     ];
 
@@ -188,7 +191,11 @@ const HeroHeader = () => {
                                         <div className="w-screen max-w-xs bg-background border rounded-2xl p-4 mr-4 flex flex-col gap-4">
                                             <Menu onAction={(key) => { navigate(key as string); setIsMenuOpen(false); }}>
                                                 {mobileMenuItems.map((item) => (
-                                                    <MenuItem key={item.to} id={item.to} className="justify-start text-lg font-medium py-3 px-3">
+                                                    <MenuItem 
+                                                      key={item.to} 
+                                                      id={item.to} 
+                                                      className={cn("justify-start text-lg font-medium py-3 px-3", location.pathname === item.to && "text-accent font-bold")}
+                                                    >
                                                         {item.name}
                                                     </MenuItem>
                                                 ))}
@@ -209,11 +216,12 @@ const HeroHeader = () => {
                             <ul className="flex gap-8 text-sm">
                                 {menuItems.map((item, index) => (
                                     <li key={index}>
-                                        <Link
+                                        <NavLink
                                             to={item.to}
-                                            className="text-muted-foreground hover:text-accent-foreground block duration-150">
+                                            className={({isActive}) => cn("block duration-150", isActive ? "font-semibold text-accent" : "text-muted-foreground hover:text-text-primary")}
+                                        >
                                             <span>{item.name}</span>
-                                        </Link>
+                                        </NavLink>
                                     </li>
                                 ))}
                             </ul>
