@@ -1,175 +1,87 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import Header from '../components/Header';
 import { blogPosts } from '../data/blogPosts';
 import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
 import { AnimatedGroup } from '../components/ui/animated-group';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '../components/ui/button';
-import { supabase } from '../lib/supabase';
-import { Input } from '../components/ui/input';
-import { Textarea } from '../components/ui/textarea';
-import { Label } from '../components/ui/label';
-import { toast } from 'sonner';
+import { ShareButtons } from '../components/ShareButtons';
 
-interface Comment {
+const generateUnsplashSrcSet = (url: string) => {
+  try {
+    const urlObj = new URL(url);
+    const baseUrl = `${urlObj.origin}${urlObj.pathname}`;
+    const sizes = [400, 600, 800, 1200, 1600];
+    return sizes
+      .map(size => {
+        const params = new URLSearchParams(urlObj.search);
+        params.set('w', String(size));
+        params.set('auto', 'format');
+        params.set('q', '75');
+        params.set('fit', 'crop');
+        return `${baseUrl}?${params.toString()} ${size}w`;
+      })
+      .join(', ');
+  } catch (e) {
+    return '';
+  }
+};
+
+interface Heading {
   id: string;
-  created_at: string;
-  author_name: string;
-  content: string;
-  post_slug: string;
+  level: number;
+  text: string;
 }
-
-const timeAgo = (dateString: string): string => {
-  const date = new Date(dateString);
-  const now = new Date();
-  const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-
-  let interval = seconds / 31536000;
-  if (interval > 1) return Math.floor(interval) + " years ago";
-  interval = seconds / 2592000;
-  if (interval > 1) return Math.floor(interval) + " months ago";
-  interval = seconds / 86400;
-  if (interval > 1) return Math.floor(interval) + " days ago";
-  interval = seconds / 3600;
-  if (interval > 1) return Math.floor(interval) + " hours ago";
-  interval = seconds / 60;
-  if (interval > 1) return Math.floor(interval) + " minutes ago";
-  return Math.floor(seconds) + " seconds ago";
-};
-
-const CommentSection: React.FC<{ slug: string }> = ({ slug }) => {
-  const [comments, setComments] = useState<Comment[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [authorName, setAuthorName] = useState('');
-  const [content, setContent] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [fetchError, setFetchError] = useState<string | null>(null);
-
-  const fetchComments = async () => {
-    setLoading(true);
-    setFetchError(null);
-    const { data, error } = await supabase
-      .from('comments')
-      .select('*')
-      .eq('post_slug', slug)
-      .order('created_at', { ascending: false });
-
-    if (error) {
-      console.error('Error fetching comments:', error.message);
-      toast.error("Could not load comments.");
-      setFetchError("We couldn't load comments. This could be a configuration issue or a temporary network problem. Please check back later.");
-    } else {
-      setComments(data as Comment[]);
-    }
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    fetchComments();
-  }, [slug]);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!authorName.trim() || !content.trim()) {
-      toast.error("Please fill in both your name and comment.");
-      return;
-    }
-
-    setIsSubmitting(true);
-    const { data, error } = await supabase
-      .from('comments')
-      .insert([{ post_slug: slug, author_name: authorName, content: content }])
-      .select();
-
-    setIsSubmitting(false);
-
-    if (error) {
-      toast.error("Failed to post comment. Please try again.");
-      console.error("Error posting comment:", error.message);
-    } else if(data) {
-      toast.success("Comment posted successfully!");
-      setComments([data[0] as Comment, ...comments]);
-      setAuthorName('');
-      setContent('');
-    }
-  };
-
-  return (
-    <div className="mt-16 pt-12 border-t border-card-border">
-      <h2 className="text-3xl font-bold text-text-primary mb-8">Comments ({!fetchError ? comments.length : '–'})</h2>
-      
-      <form onSubmit={handleSubmit} className="mb-12 bg-card-background border border-card-border p-6 rounded-lg">
-        <h3 className="text-lg font-semibold mb-4 text-card-text-primary">Leave a Reply</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <div className="space-y-1.5">
-            <Label htmlFor="authorName">Name</Label>
-            <Input 
-              id="authorName" 
-              placeholder="Your Name" 
-              value={authorName}
-              onChange={(e) => setAuthorName(e.target.value)}
-              required
-            />
-          </div>
-        </div>
-        <div className="space-y-1.5 mb-4">
-          <Label htmlFor="content">Comment</Label>
-          <Textarea 
-            id="content" 
-            placeholder="Write your comment here..." 
-            rows={4}
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            required
-          />
-        </div>
-        <div className="text-right">
-          <Button type="submit" isDisabled={isSubmitting}>
-            {isSubmitting ? 'Posting...' : 'Post Comment'}
-          </Button>
-        </div>
-      </form>
-
-      <div className="space-y-8">
-        {loading ? (
-          <p className="text-text-secondary text-center py-8">Loading comments...</p>
-        ) : fetchError ? (
-          <div className="text-center py-8 bg-destructive/10 border border-destructive/20 rounded-lg">
-            <p className="font-semibold text-destructive">Could Not Load Comments</p>
-            <p className="text-text-secondary text-sm mt-2 px-4">{fetchError}</p>
-          </div>
-        ) : comments.length === 0 ? (
-          <p className="text-text-secondary text-center py-8">No comments yet. Be the first to share your thoughts!</p>
-        ) : (
-          comments.map((comment) => (
-            <div key={comment.id} className="flex gap-4 items-start">
-              <Avatar className="h-12 w-12 border">
-                <AvatarFallback>{comment.author_name.charAt(0).toUpperCase()}</AvatarFallback>
-              </Avatar>
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-1">
-                  <p className="font-semibold text-text-primary">{comment.author_name}</p>
-                  <p className="text-xs text-text-secondary">{timeAgo(comment.created_at)}</p>
-                </div>
-                <p className="text-text-secondary leading-relaxed">{comment.content}</p>
-              </div>
-            </div>
-          ))
-        )}
-      </div>
-    </div>
-  );
-};
-
 
 const BlogPostDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const post = blogPosts.find((p) => p.slug === slug);
+  const [headings, setHeadings] = useState<Heading[]>([]);
+  const [contentWithIds, setContentWithIds] = useState('');
+
+  useEffect(() => {
+    if (!post) return;
+
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = post.content;
+
+    // --- Process Headings for ToC ---
+    const headingElements = tempDiv.querySelectorAll('h2, h3');
+    const newHeadings: Heading[] = [];
+
+    headingElements.forEach((heading, index) => {
+      const text = heading.textContent || '';
+      // A simple slugify function
+      const id = text.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '') + `-${index}`;
+      const level = parseInt(heading.tagName.substring(1), 10);
+      
+      heading.setAttribute('id', id);
+      
+      newHeadings.push({ id, level, text });
+    });
+    setHeadings(newHeadings);
+    
+    // --- Process Images for Lazy Loading ---
+    const imageElements = tempDiv.querySelectorAll('img');
+    imageElements.forEach(img => {
+      img.setAttribute('loading', 'lazy');
+      img.setAttribute('decoding', 'async');
+    });
+    
+    setContentWithIds(tempDiv.innerHTML);
+
+  }, [post]);
+
 
   if (!post) {
     return (
       <>
+        <Helmet>
+            <title>Post Not Found | SCUBE AI</title>
+            <meta name="description" content="The blog post you are looking for could not be found." />
+        </Helmet>
         <Header />
         <div className="flex-grow container mx-auto px-4 py-16 md:py-24 text-center">
           <h1 className="text-4xl font-bold mb-4">Post not found</h1>
@@ -185,46 +97,101 @@ const BlogPostDetailPage: React.FC = () => {
     );
   }
 
+  const srcSet = generateUnsplashSrcSet(post.imageUrl);
+
   return (
     <>
+      <Helmet>
+        <title>{`${post.title} | SCUBE AI Blog`}</title>
+        <meta name="description" content={post.excerpt} />
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={window.location.href} />
+        <meta property="og:title" content={post.title} />
+        <meta property="og:description" content={post.excerpt} />
+        <meta property="og:image" content={post.imageUrl} />
+        <meta property="og:site_name" content="SCUBE AI Blog" />
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content={window.location.href} />
+        <meta name="twitter:title" content={post.title} />
+        <meta name="twitter:description" content={post.excerpt} />
+        <meta name="twitter:image" content={post.imageUrl} />
+      </Helmet>
       <Header />
       <div className="flex-grow container mx-auto px-4 py-16 md:py-24">
-        <div className="max-w-4xl mx-auto">
-          <AnimatedGroup preset="slide">
-            <article>
-              <header className="mb-12 text-center">
-                <Link to="/blog" className="text-accent font-semibold text-sm hover:underline mb-4 inline-block">
-                  &larr; Back to all posts
-                </Link>
-                <p className="text-accent font-bold uppercase tracking-widest">{post.category}</p>
-                <h1 className="text-4xl md:text-5xl font-extrabold text-text-primary leading-tight my-4">
-                  {post.title}
-                </h1>
-                <div className="flex items-center justify-center gap-4 mt-6">
-                  <Avatar>
-                    <AvatarImage src={post.authorAvatar} alt={post.authorName} />
-                    <AvatarFallback>{post.authorName.charAt(0)}</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <p className="font-semibold text-text-primary">{post.authorName}</p>
-                    <p className="text-sm text-text-secondary">{post.publishDate}</p>
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-12">
+          
+          <div className="lg:col-span-3">
+            <AnimatedGroup preset="slide">
+              <article>
+                <header className="mb-12 text-center max-w-4xl mx-auto">
+                  <Link to="/blog" className="text-accent font-semibold text-sm hover:underline mb-4 inline-block">
+                    &larr; Back to all posts
+                  </Link>
+                  <p className="text-accent font-bold uppercase tracking-widest">{post.category}</p>
+                  <h1 className="text-4xl md:text-5xl font-extrabold text-text-primary leading-tight my-4">
+                    {post.title}
+                  </h1>
+                  <div className="flex items-center justify-center gap-4 mt-6">
+                    <Avatar>
+                      <AvatarImage src={post.authorAvatar} alt={post.authorName} />
+                      <AvatarFallback>{post.authorName.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <p className="font-semibold text-text-primary">{post.authorName}</p>
+                      <p className="text-sm text-text-secondary">{post.publishDate}</p>
+                    </div>
                   </div>
+                </header>
+
+                <img
+                  src={post.imageUrl}
+                  srcSet={srcSet}
+                  sizes="(max-width: 896px) 90vw, 896px"
+                  alt={post.title}
+                  className="w-full h-64 md:h-96 object-cover rounded-2xl mb-12"
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
+                />
+
+                <div className="max-w-4xl mx-auto">
+                  <div
+                    className="text-xl text-text-secondary leading-loose space-y-6 [&_p]:mb-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:space-y-2 [&_a]:text-accent hover:[&_a]:underline"
+                    dangerouslySetInnerHTML={{ __html: contentWithIds }}
+                  />
+
+                  <ShareButtons 
+                    title={post.title}
+                    url={window.location.href}
+                    excerpt={post.excerpt}
+                  />
                 </div>
-              </header>
+              </article>
+            </AnimatedGroup>
+          </div>
 
-              <img
-                src={post.imageUrl}
-                alt={post.title}
-                className="w-full h-64 md:h-96 object-cover rounded-2xl mb-12"
-              />
+          <aside className="hidden lg:block lg:col-span-1">
+            {headings.length > 1 && (
+              <div className="sticky top-28">
+                <h3 className="font-bold text-text-primary mb-4">On this page</h3>
+                <ul className="space-y-2 border-l-2 border-card-border">
+                  {headings.map((heading) => (
+                    <li key={heading.id}>
+                      <a
+                        href={`#${heading.id}`}
+                        className={`block border-l-2 -ml-0.5 border-transparent py-1 text-sm text-text-secondary hover:text-accent hover:border-accent ${heading.level === 3 ? 'pl-8' : 'pl-4'}`}
+                      >
+                        {heading.text}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </aside>
 
-              <div
-                className="text-xl text-text-secondary leading-loose space-y-6 [&_p]:mb-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:space-y-2 [&_a]:text-accent hover:[&_a]:underline"
-                dangerouslySetInnerHTML={{ __html: post.content }}
-              />
-            </article>
-          </AnimatedGroup>
-          {post.slug && <CommentSection slug={post.slug} />}
         </div>
       </div>
     </>

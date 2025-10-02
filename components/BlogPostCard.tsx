@@ -4,6 +4,21 @@ import { ArrowRight } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { type BlogPost } from '../data/blogPosts';
 
+const optimizeUnsplashUrl = (url: string, width: number) => {
+  try {
+    const urlObj = new URL(url);
+    const params = new URLSearchParams(urlObj.search);
+    params.set('w', String(width));
+    params.set('auto', 'format');
+    params.set('q', '75');
+    params.set('fit', 'crop');
+    urlObj.search = params.toString();
+    return urlObj.toString();
+  } catch (e) {
+    return url;
+  }
+};
+
 export const BlogPostCard: React.FC<{ post: BlogPost }> = ({ post }) => {
   return (
     <Link 
@@ -12,9 +27,11 @@ export const BlogPostCard: React.FC<{ post: BlogPost }> = ({ post }) => {
     >
       <div className="overflow-hidden">
         <img
-          src={post.imageUrl}
+          src={optimizeUnsplashUrl(post.imageUrl, 600)}
           alt={post.title}
           className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+          loading="lazy"
+          decoding="async"
         />
       </div>
       <div className="p-6 flex flex-col flex-grow">
@@ -34,7 +51,10 @@ export const BlogPostCard: React.FC<{ post: BlogPost }> = ({ post }) => {
                     <p className="text-xs text-card-text-secondary">{post.publishDate}</p>
                 </div>
             </div>
-            <ArrowRight className="w-5 h-5 text-card-text-secondary group-hover:text-accent group-hover:translate-x-1 transition-transform" />
+            <div className="flex items-center text-sm font-semibold text-accent">
+              Read More
+              <ArrowRight className="w-4 h-4 ml-1 transition-transform duration-300 group-hover:translate-x-1" />
+            </div>
         </div>
       </div>
     </Link>

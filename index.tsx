@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { HashRouter } from 'react-router-dom';
 import App from './App';
 import { ThemeProvider } from './contexts/ThemeContext';
+import { HelmetProvider } from 'react-helmet-async';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -13,9 +14,11 @@ const root = ReactDOM.createRoot(rootElement);
 root.render(
   <React.StrictMode>
     <HashRouter>
-      <ThemeProvider>
-        <App />
-      </ThemeProvider>
+      <HelmetProvider>
+        <ThemeProvider>
+          <App />
+        </ThemeProvider>
+      </HelmetProvider>
     </HashRouter>
   </React.StrictMode>
 );
